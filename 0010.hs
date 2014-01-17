@@ -43,17 +43,9 @@ q02 = sum $ takeWhile (<=4000000) $ [x | x<-fibs, even x]
  - What is the largest prime factor of the number 600851475143 ?
  -}
 
-q03a n (p:ps) fs =
-  let (q,r) = quotRem n p
-  in if r == 0
-       then if q==1
-              then p:fs
-              else q03b q (p:ps) (p:fs)
-       else q03b n ps fs
+q03' = factors 13195
 
-q03' = q03a 13195 primes []
-
-q03= q03a 600851475143 primes []
+q03= factors 600851475143
 
 -- 6857
 
