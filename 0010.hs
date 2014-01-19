@@ -132,6 +132,11 @@ q06 = q06a 100
  - What is the 10 001st prime number?
  -}
 
+q07a n = head . drop (n-1) $ Pe.primes
+
+q07' = q07a 6
+q07 = q07a 10001
+
 -- 104743
 
 
