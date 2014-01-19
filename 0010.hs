@@ -111,6 +111,15 @@ q05 = fst . q05c $ 20
  - hundred natural numbers and the square of the sum.
  -}
 
+q06a n =
+  let ls = [1..n]
+      x = (^2) . sum $ ls
+      y = sum . map (^2) $ ls
+  in x - y
+
+q06' = q06a 10
+q06 = q06a 100
+
 -- 25164150
 
 
