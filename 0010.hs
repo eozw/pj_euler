@@ -1,5 +1,6 @@
 
-import Data.List(genericTake)
+import Data.List(sortBy)
+import Data.Ord(compare)
 import Pe
 
 {-
@@ -62,6 +63,17 @@ q03= factors 600851475143
 
 -- 906609
 
+q04a n =
+  let l = 10^(n-1) + 1
+      u = 10^n - 1
+      ls = [(x,y,z) | x <- [l..u], y <- [l..u], x <= y, let z = x * y, isPalindrome z]
+  in sortBy cmp ls
+  where
+    cmp (_,_,a) (_,_,b) = compare a b
+
+q04' = head . reverse . q04a $ 2
+
+q04 = head . reverse . q04a $ 3
 
 {-
  - 5.
