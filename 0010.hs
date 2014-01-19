@@ -215,5 +215,10 @@ q09 = head [a*b*c | (a,b,c,_) <- q09b 1000]
  - Find the sum of all the primes below two million.
  -}
 
+q10a n = takeWhile (<n) Pe.primes
+
+q10' = sum $ q10a 10
+q10 = sum $ q10a 2000000
+
 -- 142913828922
 
