@@ -197,6 +197,13 @@ q08 = maximum . q08c 5 $ q08b
  - Find the product abc.
  -}
 
+q09a n = [(a,b,c) | a <- [1..n], b <- [(a+1)..n]
+                  , let a2b2 = a^2+b^2 ; c = floor $ sqrt $ fromIntegral a2b2
+                  , a2b2==c^2]
+q09b n = filter (\(_,_,_,d)-> n==d) . map (\(a,b,c) -> (a,b,c,a+b+c)) . q09a $ n
+
+q09 = head [a*b*c | (a,b,c,_) <- q09b 1000]
+
 -- 31875000
 
 
