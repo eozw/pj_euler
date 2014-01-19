@@ -1,6 +1,8 @@
 
 module Pe where
 
+import Data.Ord(compare)
+
 -- fibonacci sequence
 fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
 
@@ -45,4 +47,12 @@ quickSort isLarger (x:xs) =
         else divideList ys (y:as) bs
  -}
 
+-- union of two lists
+union x [] = x
+union [] y = y
+union (x:xs) (y:ys) =
+  case (compare x y) of
+    LT -> x : union    xs (y:ys)
+    EQ -> x : union    xs    ys
+    GT -> y : union (x:xs)   ys
 

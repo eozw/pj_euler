@@ -45,7 +45,6 @@ q02 = sum $ takeWhile (<=4000000) $ [x | x <- Pe.fibs, even x]
  -}
 
 q03' = head . Pe.factors $ 13195
-
 q03= head . Pe.factors $ 600851475143
 
 -- 6857
@@ -70,7 +69,6 @@ q04a n =
     cmp (_,_,a) (_,_,b) = compare a b
 
 q04' = (\(_,_,x) -> x) . head . reverse . q04a $ 2
-
 q04 = (\(_,_,x) -> x) . head . reverse . q04a $ 3
 
 -- 906609
@@ -84,6 +82,15 @@ q04 = (\(_,_,x) -> x) . head . reverse . q04a $ 3
  - What is the smallest positive number that is evenly divisible by all of
  - the numbers from 1 to 20?
  -}
+
+q05a n = map (reverse . Pe.factors) [2..n]
+q05b n = foldl Pe.union [] . q05a $ n
+q05c n =
+  let ls = q05b n
+  in (product ls, ls)
+
+q05' = fst . q05c $ 10
+q05 = fst . q05c $ 20
 
 -- 232792560
 
