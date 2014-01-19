@@ -1,7 +1,7 @@
 
 import Data.List(sortBy)
 import Data.Ord(compare)
-import Pe
+import qualified Pe
 
 {-
  - 1.
@@ -31,7 +31,7 @@ q01 = sum [x | x <- [1..(1000-1)], x `mod` 3 == 0 || x `mod` 5 == 0]
  - the even-valued terms.
  -}
 
-q02 = sum $ takeWhile (<=4000000) $ [x | x<-fibs, even x]
+q02 = sum $ takeWhile (<=4000000) $ [x | x <- Pe.fibs, even x]
 
 -- 4613732
 
@@ -44,9 +44,9 @@ q02 = sum $ takeWhile (<=4000000) $ [x | x<-fibs, even x]
  - What is the largest prime factor of the number 600851475143 ?
  -}
 
-q03' = factors 13195
+q03' = head . Pe.factors $ 13195
 
-q03= factors 600851475143
+q03= head . Pe.factors $ 600851475143
 
 -- 6857
 
@@ -61,19 +61,19 @@ q03= factors 600851475143
  - Find the largest palindrome made from the product of two 3-digit numbers.
  -}
 
--- 906609
-
 q04a n =
   let l = 10^(n-1) + 1
       u = 10^n - 1
-      ls = [(x,y,z) | x <- [l..u], y <- [l..u], x <= y, let z = x * y, isPalindrome z]
+      ls = [(x,y,z) | x <- [l..u], y <- [l..u], x <= y, let z = x * y, Pe.isPalindrome z]
   in sortBy cmp ls
   where
     cmp (_,_,a) (_,_,b) = compare a b
 
-q04' = head . reverse . q04a $ 2
+q04' = (\(_,_,x) -> x) . head . reverse . q04a $ 2
 
-q04 = head . reverse . q04a $ 3
+q04 = (\(_,_,x) -> x) . head . reverse . q04a $ 3
+
+-- 906609
 
 {-
  - 5.
