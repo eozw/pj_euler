@@ -36,9 +36,32 @@ q01a =
   ,[20,69,36,41,72,30,23,88,34,62,99,69,82,67,59,85,74,04,36,16]
   ,[20,73,35,29,78,31,90,01,74,31,49,71,48,86,81,16,23,57,05,54]
   ,[01,70,54,71,83,51,54,69,16,92,33,48,61,43,52,01,89,19,67,48]]
+data Q01 = S | E | SE | SW deriving Show
+q01b (i,j) = q01a!!i!!j
+q01c base dir =
+  case dir of
+    S  -> ((fst base)+1,  snd base   )
+    E  -> ( fst base,    (snd base)+1)
+    SE -> ((fst base)+1, (snd base)+1)
+    SW -> ((fst base)+1, (snd base)-1)
+q01d base dir len
+  | len == 0 = []
+  | len >  0 = q01b base : q01d (q01c base dir) dir (len - 1)
+q01e m =
+  let n = length q01a
+      n' = n - 1
+      m' = m - 1
+  in [((i,j),dir) | i <- [0..n'], j <- [0..n'], dir <- [S,E,SE,SW]
+                  , case dir of
+                      S  -> i + m' < n
+                      E  ->               j + m' <  n
+                      SE -> i + m' < n && j + m' <  n
+                      SW -> i + m' < n && j - m' >= 0]
+q01f m = [q01d base dir m|(base, dir) <- q01e m]
+q01g m = map product $ q01f m
 
-data Q01 = S | E | SE | SW
-
+q01' = product $ q01d (6,8) SE 4
+q01 = maximum . map product . q01f $ 4
 
 -- 70600674
 
