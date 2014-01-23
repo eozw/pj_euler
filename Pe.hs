@@ -14,6 +14,7 @@ primes = 2:3:f [3] [5,7..]
       in  ps ++ f (xs ++ ps) [z | z <- qs, mod z x /= 0]
 
 -- factors
+factors 1 = []
 factors n = factors' n primes []
   where
     factors' n (p:ps) fs =
