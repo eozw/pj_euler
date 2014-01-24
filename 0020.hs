@@ -103,9 +103,24 @@ q02d = concat . map q02c . q02b
 q02e n = head [ls | ls <- map q02d q02a, length ls > n]
 q02f = head . tail . q02e
 
-q02' = q02f 5
-q02 = q02f 500
+-- q02' = q02f 5
+-- q02 = q02f 500
 -- (63.55 secs, 10503447460 bytes)
+
+-- [3,2,2,2] -> [[3],[2,2,2]]
+q02g zss [] = zss
+q02g [[]] (x:xs) = q02g [[x]] xs
+q02g zss@(ys:yss) (x:xs) =
+  let y = head ys
+  in if x == y
+      then q02g ((y:ys):yss) xs
+      else q02g ([x]:zss) xs
+q02h = product . map ((1+) . length) . q02g [[]] . Pe.factors
+q02i n = head . dropWhile (\p -> snd p <=n) . \xs -> zip xs $ map q02h xs
+
+q02' = fst $ q02i 5 q02a
+q02 = fst $ q02i 500 q02a
+-- (9.58 secs, 1342993636 bytes)
 
 -- 76576500
 
