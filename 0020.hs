@@ -1,4 +1,5 @@
 
+import Data.List(foldl')
 import qualified Pe
 
 {-
@@ -134,6 +135,7 @@ q02 = fst $ q02i 500 q02a
  -  (see following answer)
  -
  -}
+
 q03a :: [Integer]
 q03a =
   [37107287533902102798797998220837590246510135740250
@@ -243,6 +245,7 @@ q03 = q03b 10
 
 -- 5537376230
 
+
 {-
  - 14.
  -
@@ -266,6 +269,18 @@ q03 = q03b 10
  -
  - NOTE: Once the chain starts the terms are allowed to go above one million.
  -}
+
+q14a n c
+  | n == 1    = c
+  | even n    = q14a (div n 2) (c+1)
+  | otherwise = q14a (3*n + 1) (c+1)
+q14b n c -- same performance (not improved)
+  | n == 1    = c
+  | even n    = q14b (div n 2)         (c+1)
+  | otherwise = q14a (3*(div n 2) + 2) (c+2)
+q14c f n =foldl' max' (1,1) [(m, f m 1) | m <- [1..n]]
+  where
+    max' x y = if snd x < snd y then y else x
 
 -- 837799
 
