@@ -1,5 +1,6 @@
 
 import Data.List(foldl')
+import Data.Tree
 import qualified Pe
 
 {-
@@ -270,17 +271,38 @@ q03 = q03b 10
  - NOTE: Once the chain starts the terms are allowed to go above one million.
  -}
 
-q14a n c
+q04a n c
   | n == 1    = c
-  | even n    = q14a (div n 2) (c+1)
-  | otherwise = q14a (3*n + 1) (c+1)
-q14b n c -- same performance (not improved)
+  | even n    = q04a (div n 2) (c+1)
+  | otherwise = q04a (3*n + 1) (c+1)
+q04b n c -- same performance (not improved)
   | n == 1    = c
-  | even n    = q14b (div n 2)         (c+1)
-  | otherwise = q14a (3*(div n 2) + 2) (c+2)
-q14c f n =foldl' max' (1,1) [(m, f m 1) | m <- [1..n]]
+  | even n    = q04b (div n 2)         (c+1)
+  | otherwise = q04b (3*(div n 2) + 2) (c+2)
+q04c f n =foldl' max' (1,1) [(m, f m 1) | m <- [1..n]]
   where
     max' x y = if snd x < snd y then y else x
+{-
+*Main> q04c q04a 1000000
+(837799,525)
+(260.83 secs, 41607568896 bytes)
+*Main> q04c q04b 1000000
+(837799,525)
+(196.16 secs, 32010488692 bytes)
+ -}
+q04d = fmap (\n -> q04e n) Pe.natTree
+q04e n
+  | n == 1    = 1
+  | even n    = q04d Pe.!!! (div n 2)
+  | otherwise = q04b (3*(div n 2) + 2) 3
+q04f n = foldl' max' (1,1) [(m, q04d Pe.!!! m) | m <- [1..n]]
+  where
+    max' x y = if snd x < snd y then y else x
+{-
+*Main> q04f 1000000
+(837799,525)
+(153.89 secs, 24147770048 bytes)
+ -}
 
 -- 837799
 
