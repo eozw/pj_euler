@@ -317,6 +317,11 @@ q04h n
 q04i n = foldl' max' (1,1) [(m, q04g Pe.!!! m) | m <- [1..n]]
   where
     max' x y = if snd x < snd y then y else x
+{-
+*Main> q04i 1000000
+(837799,531)
+(75.69 secs, 11044100968 bytes)
+ -}
 
 
 -- 837799
