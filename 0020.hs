@@ -303,6 +303,21 @@ q04f n = foldl' max' (1,1) [(m, q04d Pe.!!! m) | m <- [1..n]]
 (837799,525)
 (153.89 secs, 24147770048 bytes)
  -}
+q04g = fmap (\n -> q04h n) Pe.natTree
+q04h n
+  | n == 1    = 1
+  | even n    = q04g  Pe.!!! (div n 2)
+  | otherwise = q04h' (3*(div n 2) + 2) 3
+  where
+    q04h' m d
+      | m == 1    = d
+      | m < n     = d + q04g Pe.!!! m
+      | even m    = q04h' (div m 2) (d+1)
+      | otherwise = q04h' (3*(div m 2) + 2) (d+2)
+q04i n = foldl' max' (1,1) [(m, q04g Pe.!!! m) | m <- [1..n]]
+  where
+    max' x y = if snd x < snd y then y else x
+
 
 -- 837799
 
