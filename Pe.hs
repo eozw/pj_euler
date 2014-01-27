@@ -57,3 +57,13 @@ union (x:xs) (y:ys) =
     EQ -> x : union    xs    ys
     GT -> y : union (x:xs)   ys
 
+-- Tree
+data Tree a = Tree a (Tree a) (Tree a) deriving Show
+Tree a lt rt !!! n
+  | n == 0    = a
+  | odd n     = lt !!! div n 2
+  | otherwise = rt !!! ((div n 2) - 1)
+instance Functor Tree where
+  fmap f (Tree a lt rt) = Tree (f a) (fmap f lt) (fmap f rt)
+natTree = Tree 0 (fmap ((+1).(*2)) natTree) (fmap ((*2).(+1)) natTree)
+
