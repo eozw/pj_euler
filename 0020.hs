@@ -322,7 +322,14 @@ q04i n = foldl' max' (1,1) [(m, q04g Pe.!!! m) | m <- [1..n]]
 (837799,531)
 (75.69 secs, 11044100968 bytes)
  -}
-
+q04j n = foldl' max' (1,1) [Pe.collatzTree Pe.!!! m | m <- [1..n]]
+  where
+    max' x y = if snd x < snd y then y else x
+{-
+*Main> q04j 1000000
+(837799,525)
+(104.21 secs, 14865097424 bytes)
+ -}
 
 -- 837799
 
