@@ -4,6 +4,27 @@ import Data.Tree
 import qualified Pe
 
 {-
+ - 10.
+ -
+ - The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
+ -
+ - Find the sum of all the primes below two million.
+ -}
+
+q0a n = takeWhile (<n) Pe.primes
+
+q0' = sum $ q0a 10
+q0 = sum $ q0a 2000000
+{-
+*Main> q0
+142913828922
+(30.78 secs, 4434541520 bytes)
+ -}
+
+-- 142913828922
+
+
+{-
  - 11.
  -
  - In the 20~20 grid below, four numbers along a diagonal line have
@@ -17,7 +38,7 @@ import qualified Pe
  - direction (up, down, left, right, or diagonally) in the 20~20 grid?
  -}
 
-q01a =
+q1a =
   [[08,02,22,97,38,15,00,40,00,75,04,05,07,78,52,12,50,77,91,08]
   ,[49,49,99,40,17,81,18,57,60,87,17,40,98,43,69,48,04,56,62,00]
   ,[81,49,31,73,55,79,14,29,93,71,40,67,53,88,30,03,49,13,36,65]
@@ -38,19 +59,19 @@ q01a =
   ,[20,69,36,41,72,30,23,88,34,62,99,69,82,67,59,85,74,04,36,16]
   ,[20,73,35,29,78,31,90,01,74,31,49,71,48,86,81,16,23,57,05,54]
   ,[01,70,54,71,83,51,54,69,16,92,33,48,61,43,52,01,89,19,67,48]]
-data Q01 = S | E | SE | SW deriving Show
-q01b (i,j) = q01a!!i!!j
-q01c base dir =
+data Q1 = S | E | SE | SW deriving Show
+q1b (i,j) = q1a!!i!!j
+q1c base dir =
   case dir of
     S  -> ((fst base)+1,  snd base   )
     E  -> ( fst base,    (snd base)+1)
     SE -> ((fst base)+1, (snd base)+1)
     SW -> ((fst base)+1, (snd base)-1)
-q01d base dir len
+q1d base dir len
   | len == 0 = []
-  | len >  0 = q01b base : q01d (q01c base dir) dir (len - 1)
-q01e m =
-  let n = length q01a
+  | len >  0 = q1b base : q1d (q1c base dir) dir (len - 1)
+q1e m =
+  let n = length q1a
       n' = n - 1
       m' = m - 1
   in [((i,j),dir) | i <- [0..n'], j <- [0..n'], dir <- [S,E,SE,SW]
@@ -59,11 +80,11 @@ q01e m =
                       E  ->               j + m' <  n
                       SE -> i + m' < n && j + m' <  n
                       SW -> i + m' < n && j - m' >= 0]
-q01f m = [q01d base dir m|(base, dir) <- q01e m]
-q01g m = map product $ q01f m
+q1f m = [q1d base dir m|(base, dir) <- q1e m]
+q1g m = map product $ q1f m
 
-q01' = product $ q01d (6,8) SE 4
-q01 = maximum . map product . q01f $ 4
+q1' = product $ q1d (6,8) SE 4
+q1 = maximum . map product . q1f $ 4
 
 -- 70600674
 
@@ -93,35 +114,35 @@ q01 = maximum . map product . q01f $ 4
  - divisors?
  -}
 
-q02a = tail $ scanl (+) 0 [1..]
-q02b n = [(m,q) | m <- [1..(f n)], let (q,r) = quotRem n m, r == 0]
+q2a = tail $ scanl (+) 0 [1..]
+q2b n = [(m,q) | m <- [1..(f n)], let (q,r) = quotRem n m, r == 0]
   where
     f = floor . sqrt . fromInteger
-q02c pair =
+q2c pair =
   if fst pair == snd pair
     then [fst pair]
     else [fst pair, snd pair]
-q02d = concat . map q02c . q02b
-q02e n = head [ls | ls <- map q02d q02a, length ls > n]
-q02f = head . tail . q02e
+q2d = concat . map q2c . q2b
+q2e n = head [ls | ls <- map q2d q2a, length ls > n]
+q2f = head . tail . q2e
 
--- q02' = q02f 5
--- q02 = q02f 500
+-- q2' = q2f 5
+-- q2 = q2f 500
 -- (63.55 secs, 10503447460 bytes)
 
 -- [3,2,2,2] -> [[3],[2,2,2]]
-q02g zss [] = zss
-q02g [[]] (x:xs) = q02g [[x]] xs
-q02g zss@(ys:yss) (x:xs) =
+q2g zss [] = zss
+q2g [[]] (x:xs) = q2g [[x]] xs
+q2g zss@(ys:yss) (x:xs) =
   let y = head ys
   in if x == y
-      then q02g ((y:ys):yss) xs
-      else q02g ([x]:zss) xs
-q02h = product . map ((1+) . length) . q02g [[]] . Pe.factors
-q02i n = head . dropWhile (\p -> snd p <=n) . \xs -> zip xs $ map q02h xs
+      then q2g ((y:ys):yss) xs
+      else q2g ([x]:zss) xs
+q2h = product . map ((1+) . length) . q2g [[]] . Pe.factors
+q2i n = head . dropWhile (\p -> snd p <=n) . \xs -> zip xs $ map q2h xs
 
-q02' = fst $ q02i 5 q02a
-q02 = fst $ q02i 500 q02a
+q2' = fst $ q2i 5 q2a
+q2 = fst $ q2i 500 q2a
 -- (9.58 secs, 1342993636 bytes)
 
 -- 76576500
@@ -137,8 +158,8 @@ q02 = fst $ q02i 500 q02a
  -
  -}
 
-q03a :: [Integer]
-q03a =
+q3a :: [Integer]
+q3a =
   [37107287533902102798797998220837590246510135740250
   ,46376937677490009712648124896970078050417018260538
   ,74324986199524741059474233309513058123726617309629
@@ -240,9 +261,9 @@ q03a =
   ,20849603980134001723930671666823555245252804609722
   ,53503534226472524250874054075591789781264330331690]
 
-q03b n = take n . show . sum . map fromIntegral $ q03a
+q3b n = take n . show . sum . map fromIntegral $ q3a
 
-q03 = q03b 10
+q3 = q3b 10
 
 -- 5537376230
 
@@ -271,67 +292,67 @@ q03 = q03b 10
  - NOTE: Once the chain starts the terms are allowed to go above one million.
  -}
 
-q04a n c
+q4a n c
   | n == 1    = c
-  | even n    = q04a (div n 2) (c+1)
-  | otherwise = q04a (3*n + 1) (c+1)
-q04b n c -- same performance (not improved)
+  | even n    = q4a (div n 2) (c+1)
+  | otherwise = q4a (3*n + 1) (c+1)
+q4b n c -- same performance (not improved)
   | n == 1    = c
-  | even n    = q04b (div n 2)         (c+1)
-  | otherwise = q04b (3*(div n 2) + 2) (c+2)
-q04c f n =foldl' max' (1,1) [(m, f m 1) | m <- [1..n]]
+  | even n    = q4b (div n 2)         (c+1)
+  | otherwise = q4b (3*(div n 2) + 2) (c+2)
+q4c f n =foldl' max' (1,1) [(m, f m 1) | m <- [1..n]]
   where
     max' x y = if snd x < snd y then y else x
 {-
-*Main> q04c q04a 1000000
+*Main> q4c q4a 1000000
 (837799,525)
 (260.83 secs, 41607568896 bytes)
-*Main> q04c q04b 1000000
+*Main> q4c q4b 1000000
 (837799,525)
 (196.16 secs, 32010488692 bytes)
  -}
-q04d = fmap (\n -> q04e n) Pe.natTree
-q04e n
+q4d = fmap (\n -> q4e n) Pe.natTree
+q4e n
   | n == 1    = 1
-  | even n    = q04d Pe.!!! (div n 2)
-  | otherwise = q04b (3*(div n 2) + 2) 3
-q04f n = foldl' max' (1,1) [(m, q04d Pe.!!! m) | m <- [1..n]]
+  | even n    = q4d Pe.!!! (div n 2)
+  | otherwise = q4b (3*(div n 2) + 2) 3
+q4f n = foldl' max' (1,1) [(m, q4d Pe.!!! m) | m <- [1..n]]
   where
     max' x y = if snd x < snd y then y else x
 {-
-*Main> q04f 1000000
+*Main> q4f 1000000
 (837799,525)
 (153.89 secs, 24147770048 bytes)
  -}
-q04g = fmap (\n -> q04h n) Pe.natTree
-q04h n
+q4g = fmap (\n -> q4h n) Pe.natTree
+q4h n
   | n == 1    = 1
-  | even n    = (1+) $ q04g  Pe.!!! (div n 2)
-  | otherwise = q04h' (3*(div n 2) + 2) 2
+  | even n    = (1+) $ q4g  Pe.!!! (div n 2)
+  | otherwise = q4h' (3*(div n 2) + 2) 2
   where
-    q04h' m d
+    q4h' m d
       | m == 1    = d
-      | m < n     = (d+) $ q04g Pe.!!! m
-      | even m    = q04h' (div m 2) (d+1)
-      | otherwise = q04h' (3*(div m 2) + 2) (d+2)
-q04i n = foldl' max' (1,1) [(m, q04g Pe.!!! m) | m <- [1..n]]
+      | m < n     = (d+) $ q4g Pe.!!! m
+      | even m    = q4h' (div m 2) (d+1)
+      | otherwise = q4h' (3*(div m 2) + 2) (d+2)
+q4i n = foldl' max' (1,1) [(m, q4g Pe.!!! m) | m <- [1..n]]
   where
     max' x y = if snd x < snd y then y else x
 {-
-*Main> q04i 1000000
+*Main> q4i 1000000
 (837799,525)
 (79.33 secs, 11096009152 bytes)
  -}
-q04j n = foldl' max' (1,1) [Pe.collatzTree Pe.!!! m | m <- [1..n]]
+q4j n = foldl' max' (1,1) [Pe.collatzTree Pe.!!! m | m <- [1..n]]
   where
     max' x y = if snd x < snd y then y else x
 {-
-*Main> q04j 1000000
+*Main> q4j 1000000
 (837799,525)
 (108.22 secs, 14865069648 bytes)
  -}
 
-main = print $ q04i 1000000
+-- main = print $ q4i 1000000
 
 -- 837799
 

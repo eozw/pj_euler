@@ -5,6 +5,15 @@ import Data.Char(digitToInt)
 import qualified Pe
 
 {-
+ - 0.
+ -}
+
+q0 = undefined
+
+--
+
+
+{-
  - 1.
  -
  - If we list all the natural numbers below 10 that are multiples of
@@ -13,7 +22,7 @@ import qualified Pe
  - Find the sum of all the multiples of 3 or 5 below 1000.
  -}
 
-q01 = sum [x | x <- [1..(1000-1)], x `mod` 3 == 0 || x `mod` 5 == 0]
+q1 = sum [x | x <- [1..(1000-1)], x `mod` 3 == 0 || x `mod` 5 == 0]
 
 -- 233168
 
@@ -32,7 +41,7 @@ q01 = sum [x | x <- [1..(1000-1)], x `mod` 3 == 0 || x `mod` 5 == 0]
  - the even-valued terms.
  -}
 
-q02 = sum $ takeWhile (<=4000000) $ [x | x <- Pe.fibs, even x]
+q2 = sum $ takeWhile (<=4000000) $ [x | x <- Pe.fibs, even x]
 
 -- 4613732
 
@@ -45,8 +54,8 @@ q02 = sum $ takeWhile (<=4000000) $ [x | x <- Pe.fibs, even x]
  - What is the largest prime factor of the number 600851475143 ?
  -}
 
-q03' = head . Pe.factors $ 13195
-q03= head . Pe.factors $ 600851475143
+q3' = head . Pe.factors $ 13195
+q3= head . Pe.factors $ 600851475143
 
 -- 6857
 
@@ -61,7 +70,7 @@ q03= head . Pe.factors $ 600851475143
  - Find the largest palindrome made from the product of two 3-digit numbers.
  -}
 
-q04a n =
+q4a n =
   let l = 10^(n-1) + 1
       u = 10^n - 1
       ls = [(x,y,z) | x <- [l..u], y <- [l..u], x <= y, let z = x * y, Pe.isPalindrome z]
@@ -69,8 +78,8 @@ q04a n =
   where
     cmp (_,_,a) (_,_,b) = compare a b
 
-q04' = (\(_,_,x) -> x) . head . reverse . q04a $ 2
-q04 = (\(_,_,x) -> x) . head . reverse . q04a $ 3
+q4' = (\(_,_,x) -> x) . head . reverse . q4a $ 2
+q4 = (\(_,_,x) -> x) . head . reverse . q4a $ 3
 
 -- 906609
 
@@ -84,14 +93,14 @@ q04 = (\(_,_,x) -> x) . head . reverse . q04a $ 3
  - the numbers from 1 to 20?
  -}
 
-q05a n = map (reverse . Pe.factors) [2..n]
-q05b n = foldl Pe.union [] . q05a $ n
-q05c n =
-  let ls = q05b n
+q5a n = map (reverse . Pe.factors) [2..n]
+q5b n = foldl Pe.union [] . q5a $ n
+q5c n =
+  let ls = q5b n
   in (product ls, ls)
 
-q05' = fst . q05c $ 10
-q05 = fst . q05c $ 20
+q5' = fst . q5c $ 10
+q5 = fst . q5c $ 20
 
 -- 232792560
 
@@ -112,14 +121,14 @@ q05 = fst . q05c $ 20
  - hundred natural numbers and the square of the sum.
  -}
 
-q06a n =
+q6a n =
   let ls = [1..n]
       x = (^2) . sum $ ls
       y = sum . map (^2) $ ls
   in x - y
 
-q06' = q06a 10
-q06 = q06a 100
+q6' = q6a 10
+q6 = q6a 100
 
 -- 25164150
 
@@ -133,10 +142,10 @@ q06 = q06a 100
  - What is the 10 001st prime number?
  -}
 
-q07a n = head . drop (n-1) $ Pe.primes
+q7a n = head . drop (n-1) $ Pe.primes
 
-q07' = q07a 6
-q07 = q07a 10001
+q7' = q7a 6
+q7 = q7a 10001
 
 -- 104743
 
@@ -150,7 +159,7 @@ q07 = q07a 10001
  -  (see following answer)
  -}
 
-q08a =
+q8a =
     "73167176531330624919225119674426574742355349194934"
   ++"96983520312774506326239578318016984801869478851843"
   ++"85861560789112949495459501737958331952853208805511"
@@ -171,14 +180,14 @@ q08a =
   ++"84580156166097919133875499200524063689912560717606"
   ++"05886116467109405077541002256983155200055935729725"
   ++"71636269561882670428252483600823257530420752963450"
-q08b = map digitToInt q08a
-q08c n xs@(y:ys) =
+q8b = map digitToInt q8a
+q8c n xs@(y:ys) =
   let (hs,ts) = splitAt n xs
       m = length hs
   in if m<n then []
-            else product hs : (q08c n ys)
+            else product hs : (q8c n ys)
 
-q08 = maximum . q08c 5 $ q08b
+q8 = maximum . q8c 5 $ q8b
 
 -- 40824
 
@@ -197,28 +206,11 @@ q08 = maximum . q08c 5 $ q08b
  - Find the product abc.
  -}
 
-q09a n = [(a,b,c) | a <- [1..n], b <- [(a+1)..n]
+q9a n = [(a,b,c) | a <- [1..n], b <- [(a+1)..n]
                   , let a2b2 = a^2+b^2 ; c = floor $ sqrt $ fromIntegral a2b2
                   , a2b2==c^2]
-q09b n = filter (\(_,_,_,d)-> n==d) . map (\(a,b,c) -> (a,b,c,a+b+c)) . q09a $ n
+q9b n = filter (\(_,_,_,d)-> n==d) . map (\(a,b,c) -> (a,b,c,a+b+c)) . q9a $ n
 
-q09 = head [a*b*c | (a,b,c,_) <- q09b 1000]
+q9 = head [a*b*c | (a,b,c,_) <- q9b 1000]
 
 -- 31875000
-
-
-{-
- - 10.
- -
- - The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
- -
- - Find the sum of all the primes below two million.
- -}
-
-q10a n = takeWhile (<n) Pe.primes
-
-q10' = sum $ q10a 10
-q10 = sum $ q10a 2000000
-
--- 142913828922
-
