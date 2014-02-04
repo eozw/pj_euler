@@ -1,6 +1,7 @@
 
-import Data.List(foldl')
-import Data.Tree
+import Data.List(foldl', maximumBy)
+import Data.Ord(comparing)
+import Data.Array
 import qualified Pe
 
 {-
@@ -351,8 +352,20 @@ q4j n = foldl' max' (1,1) [Pe.collatzTree Pe.!!! m | m <- [1..n]]
 (837799,525)
 (108.22 secs, 14865069648 bytes)
  -}
+q4k nmax = maximumBy (comparing snd) (assocs arr)
+  where
+    arr = listArray (1,nmax) (1:[f n n 0 | n <- [2..nmax]])
+    f mmax m c
+      | m < mmax  = (arr ! m) + c
+      | even m    = f mmax (div m 2) (c+1)
+      | otherwise = f mmax (3*(div m 2) + 2) (c+2)
 
--- main = print $ q4i 1000000
+q4 = q4k 1000000
+{-
+*Main> q4
+(837799,525)
+(10.89 secs, 1663133160 bytes)
+ -}
 
 -- 837799
 
