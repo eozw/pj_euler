@@ -415,6 +415,26 @@ q6 = sum . map digitToInt . show $ 2^1000
  - compliance with British usage.
  -}
 
+
+q7a n
+  | n == 1000
+    = length "onethousand"
+  | n >= 100
+    = (q7a (div n 100)) + (length "hundredand") + (q7a (mod n 100))
+    - if (mod n 100) == 0 then (length "and") else 0
+  | n >= 20
+    = length (l2!!(div n 10)) + length (l1!!(mod n 10))
+  | otherwise
+    = length (l1!!n)
+  where
+  l1 = [""       ,"one"    ,"two"      ,"three"   ,"four"
+       ,"five"   ,"six"    ,"seven"    ,"eight"   ,"nine"
+       ,"ten"    ,"eleven" ,"twelve"   ,"thirteen","fourteen"
+       ,"fifteen","sixteen","seventeen","eighteen","nineteen"]
+  l2 = [""       ,""       ,"twenty"   ,"thirty"  ,"forty"
+       ,"fifty"  ,"sixty"  ,"seventy"  ,"eighty"  ,"ninety"]
+q7 = sum $ map q7a [1..1000]
+
 -- 21124
 
 
