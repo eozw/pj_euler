@@ -3,6 +3,7 @@ import Data.List(foldl', maximumBy)
 import Data.Ord(comparing)
 import Data.Array((!),listArray,assocs)
 import Data.Ratio((%),numerator)
+import Data.Char(digitToInt)
 import qualified Pe
 
 {-
@@ -393,6 +394,8 @@ q5 = numerator . product $ map (\n -> n % (n-20)) [21..40]
  -
  - What is the sum of the digits of the number 2^1000?
  -}
+
+q6 = sum . map digitToInt . show $ 2^1000
 
 -- 1366
 
