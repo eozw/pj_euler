@@ -1,7 +1,8 @@
 
 import Data.List(foldl', maximumBy)
 import Data.Ord(comparing)
-import Data.Array
+import Data.Array((!),listArray,assocs)
+import Data.Ratio((%),numerator)
 import qualified Pe
 
 {-
@@ -379,6 +380,8 @@ q4 = q4k 1000000
  -
  - How many such routes are there through a 20~20 grid?
  -}
+
+q5 = numerator . product $ map (\n -> n % (n-20)) [21..40]
 
 -- 137846528820
 
